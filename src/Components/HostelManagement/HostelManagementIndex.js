@@ -11,6 +11,8 @@ import EditStaff from './EditStaff'
 import StaffPayment from './StaffPayment'
 import StaffList from './StaffList'
 import PreviousStaff from './PreviousStaff'
+import HostelerHome from './HostelerHome'
+import StaffHome from './StaffHome'
 
 const HostelManagementIndex = () => {
   return (
@@ -24,7 +26,15 @@ const HostelManagementIndex = () => {
             <div className='my-1'>
               <Link to='/' className='btn btn-primary w-100'>Room Management</Link>
             </div>
+            <hr/>
             <div className='my-1'>
+              <Link to='/hostelerhome' className='btn btn-primary w-100 px-2'>Hosteler Management</Link>
+            </div>
+            <hr/>
+            <div className='my-1'>
+              <Link to='/staffhome' className='btn btn-primary w-100'>Staff Management</Link>
+            </div>
+            {/* <div className='my-1'>
               <Link to='/newhostler' className='btn btn-primary w-100'>New Hosteler</Link>
             </div>
             <div className='my-1'>
@@ -39,7 +49,6 @@ const HostelManagementIndex = () => {
             <div className='my-1'>
               <Link to='/previoushostelers' className='btn btn-primary w-100'>Previous Hostelers</Link>
             </div>
-            <hr/>
             <div className='my-1'>
               <Link to='/newstaff' className='btn btn-primary w-100'>New Staff</Link>
             </div>
@@ -54,7 +63,7 @@ const HostelManagementIndex = () => {
             </div>
             <div className='my-1'>
               <Link to='/previousstaff' className='btn btn-primary w-100'>Previous Staff</Link>
-            </div>
+            </div> */}
           </div>
           <div className='col-10'>
             <Routes>
@@ -69,6 +78,8 @@ const HostelManagementIndex = () => {
               <Route path='/staffpayment' element={<StaffPayment/>}/>
               <Route path='/stafflist' element={<StaffList/>}/>
               <Route path='/previousstaff' element={<PreviousStaff/>}/>
+              <Route path='/hostelerhome' element={<HostelerHome/>}/>
+              <Route path='/staffhome' element={<StaffHome/>}/>
             </Routes>
           </div>
         </BrowserRouter>
