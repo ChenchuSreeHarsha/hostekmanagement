@@ -118,10 +118,9 @@ const RoomManagement = () => {
 
   const handleDeleteRoom = async (roomId) => {
     try {
-      await HostelManagement.DeleteRoom(roomId).then(res => {
-        console.log(res.data);
-        FetchRooms();
-      });
+      const response = await axios.delete(`http://localhost:4000/deleteroom/${roomId}`);
+      console.log(response.data);
+      FetchRooms();
     } catch (error) {
       console.error('There was an error deleting the room:', error);
     }
@@ -162,7 +161,7 @@ const RoomManagement = () => {
       <h3 className='fs-bold text-secondary'>Room Management</h3>
       <div className='mt-2 ms-3'>
         <div className='ms-5 mt-3'>
-          <button className='btn btn-info fw-semibold ms-5' onClick={HandleNewRoom}>Add New Room</button>
+          <button className='btn btn-info fw-semibold ms-5' onClick={HandleNewRoom}>Add New Room <i className="fa-solid fa-plus ms-2"></i></button>
         </div>
       </div>
       <div className='mt-2 ms-3'>
@@ -180,15 +179,15 @@ const RoomManagement = () => {
           <tbody>
             {
               roomsData.map((item,index) => (
-                <tr key={item.id}>
+                <tr key={item.id} className='text-dark'>
                   <td className='text-center'>{index + 1}</td>
                   <td className='text-center'>{item.roomNumber}</td>
                   <td className='text-center'>{item.sharing}</td>
                   <td className='text-center'>{item.isActive ? 'Active' : 'Inactive'}</td>
                   <td className='text-center'>
                     <>
-                      <button className='btn btn-warning mx-2 py-1' onClick={() => handleEditRoom(item)}>Edit</button>
-                      <button className='btn btn-danger mx-2 py-1' onClick={() => handleDeleteRoom(item.roomId)}>Delete</button>
+                      <button className='btn btn-warning mx-2 py-1' onClick={() => handleEditRoom(item)}>Edit <i className="fa-solid fa-pen-to-square ms-1"></i></button>
+                      <button className='btn btn-danger mx-2 py-1' onClick={() => handleDeleteRoom(item.roomId)}>Delete <i className="fa-solid fa-trash ms-2"></i></button>
                     </>
                   </td>
                 </tr>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import RoomManagement from './RoomManagement'
 import NewHosteler from './NewHosteler'
@@ -13,57 +13,58 @@ import StaffList from './StaffList'
 import PreviousStaff from './PreviousStaff'
 import HostelerHome from './HostelerHome'
 import StaffHome from './StaffHome'
+import '../../App.css';
 
 const HostelManagementIndex = () => {
+
+  const [activeButton, setActiveButton] = useState('');
+
+  const HandleActive = (buttonName) => {
+    setActiveButton(buttonName);
+    sessionStorage.setItem('activeButton', buttonName);
+  }
+
+  useEffect(() => {
+    const storedButton = sessionStorage.getItem('activeButton');
+    if (storedButton) {
+      setActiveButton(storedButton);
+    }
+  }, []);
+
   return (
     <div className='container-fluid'>
       <div className='row'>
         <BrowserRouter>
           <div>
-            <h2 className='fw-bold text-center my-1 text-primary'>Hostel Management</h2>
+            <h2 className='fw-bold text-center my-1 text-primary'>Hostel Management <i className="fa-solid fa-bed ms-2"></i></h2>
           </div>
           <div className='col-2 mt-3 p-3'>
             <div className='my-1'>
-              <Link to='/' className='btn btn-primary w-100'>Room Management</Link>
+              <Link 
+                to='/' 
+                className={`btn w-100 px-1 ${activeButton === 'roommanagement' ? 'btn-primary underline-active' : 'btn-outline-primary text-dark'}`} 
+                onClick={() => { HandleActive('roommanagement') }}>
+                  Room Management <i className="fa-solid fa-house"></i>
+              </Link>
             </div>
             <hr/>
             <div className='my-1'>
-              <Link to='/hostelerhome' className='btn btn-primary w-100 px-2'>Hosteler Management</Link>
+              <Link 
+                to='/hostelerhome' 
+                className={`btn w-100 px-2 ${activeButton === 'hostelmanagement' ? 'btn-primary underline-active' : 'btn-outline-primary text-dark'}`} 
+                onClick={() => { HandleActive('hostelmanagement') }}>
+                  Hosteler Management
+              </Link>
             </div>
             <hr/>
             <div className='my-1'>
-              <Link to='/staffhome' className='btn btn-primary w-100'>Staff Management</Link>
+              <Link 
+                to='/staffhome' 
+                className={`btn w-100 px-1 ${activeButton === 'staffmanagement' ? 'btn-primary underline-active' : 'btn-outline-primary text-dark'}`} 
+                onClick={() => { HandleActive('staffmanagement') }}>
+                  Staff Management <i className="fa-solid fa-user ms-1"></i>
+              </Link>
             </div>
-            {/* <div className='my-1'>
-              <Link to='/newhostler' className='btn btn-primary w-100'>New Hosteler</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/edithostelers' className='btn btn-primary w-100'>Edit Hostelers</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/hostelersfees' className='btn btn-primary w-100'>Hosteler's Fees</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/hostelerslist' className='btn btn-primary w-100'>Hosteler's List</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/previoushostelers' className='btn btn-primary w-100'>Previous Hostelers</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/newstaff' className='btn btn-primary w-100'>New Staff</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/editstaff' className='btn btn-primary w-100'>Edit Staff</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/staffpayment' className='btn btn-primary w-100'>Staff Payment</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/stafflist' className='btn btn-primary w-100'>Staff's List</Link>
-            </div>
-            <div className='my-1'>
-              <Link to='/previousstaff' className='btn btn-primary w-100'>Previous Staff</Link>
-            </div> */}
           </div>
           <div className='col-10'>
             <Routes>
@@ -88,4 +89,4 @@ const HostelManagementIndex = () => {
   )
 }
 
-export default HostelManagementIndex
+export default HostelManagementIndex;

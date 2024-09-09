@@ -24,6 +24,7 @@ const NewHosteler = () => {
       HostelManagement.AddNewHosteler(hosteler).then(res=>{
         console.log(res.data);
       })
+      setHosteler('');
     } catch (error) {
       console.log(error);
       

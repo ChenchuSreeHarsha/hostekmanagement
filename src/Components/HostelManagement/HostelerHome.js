@@ -5,15 +5,21 @@ import { Modal } from 'react-bootstrap'
 
 const HostelerHome = () => {
 
-  const [showAddHosteler,setShowAddHosteler] = useState(false)
+  const [showAddHosteler,setShowAddHosteler] = useState(false);
+  const [showUpdateHosteler,setShowUpdateHosteler] = useState(false);
 
   const [hosteler,setHosteler] = useState({
     name:'',
     fathername:'',
     mobileno:'',
+    altmobileno:'',
     email:'',
-    address:'',
     workingname:'',
+    houseno:'',
+    street:'',
+    city:'',
+    state:'',
+    pincode:'',
     roomno:''
   })
 
@@ -69,32 +75,32 @@ const HostelerHome = () => {
           </table>
         </div>
       </div>
-      <Modal show={showAddHosteler} onHide={HandleClose}>
+      <Modal show={showAddHosteler} onHide={HandleClose} className=''>
           <Modal.Header closeButton  >
-            <Modal.Title>Add Hosteler</Modal.Title>
+            <Modal.Title className='text-secondary'>Add Hosteler</Modal.Title>
           </Modal.Header>
           <Modal.Body className='mx-3'>
             <form className='ms-2' onSubmit={HandleSubmit}>
               <div className='row'>
                 <div className='d-flex my-1'>
-                  <label className='form-label fw-bold mt-2 col-4' htmlFor='name'>Name :</label>
+                  <label className='form-label fw-bold mt-2 col-5' htmlFor='name'>Name :</label>
                   <input
                     type='text'
                     name='name'
                     id='name'
-                    className='form-control w-50 col-8'
+                    className='form-control w-50 col-7'
                     placeholder='Enter Hosteler Name'
                     value={hosteler.name}
                     onChange={HandleChange}
                   />
                 </div>
                 <div className='d-flex my-1'>
-                <label className='form-label fw-bold mt-2 col-4' htmlFor='fathername'>Father's Name :</label>
+                <label className='form-label fw-bold mt-2 col-5' htmlFor='fathername'>Father's Name :</label>
                   <input
                     type='text'
                     name='fathername'
                     id='fathername'
-                    className='form-control w-50 col-8'
+                    className='form-control w-50 col-7'
                     placeholder='Enter Father`s Name'
                     value={hosteler.fathername}
                     onChange={HandleChange}
@@ -103,53 +109,115 @@ const HostelerHome = () => {
               </div>
               <div className='row'>
                 <div className='d-flex my-1'>
-                  <label className='form-label fw-bold mt-2 col-4' htmlFor='mobileno'>Mobile No. :</label>
+                  <label className='form-label fw-bold mt-2 col-5' htmlFor='mobileno'>Mobile No. :</label>
                   <input
                     type='text'
                     name='mobileno'
                     id='mobileno'
-                    className='form-control w-50 col-8'
+                    className='form-control w-50 col-7'
                     placeholder='Enter Mobile Number'
                     value={hosteler.mobileno}
                     onChange={HandleChange}
                   />
                 </div>
                 <div className='d-flex my-1'>
-                <label className='form-label fw-bold mt-2 col-4' htmlFor='email'>Mail-Id :</label>
+                  <label className='form-label fw-bold mt-2 col-5' htmlFor='altmobileno'>Alternate Mobile No. :</label>
+                  <input
+                    type='text'
+                    name='altmobileno'
+                    id='altmobileno'
+                    className='form-control w-50 col-7'
+                    placeholder='Enter Mobile Number'
+                    value={hosteler.altmobileno}
+                    onChange={HandleChange}
+                  />
+                </div>
+                <div className='d-flex my-1'>
+                <label className='form-label fw-bold mt-2 col-5' htmlFor='email'>Mail-Id :</label>
                   <input
                     type='text'
                     name='email'
                     id='email'
-                    className='form-control w-50 col-8'
+                    className='form-control w-50 col-7'
                     placeholder='Enter Mail id'
                     value={hosteler.email}
                     onChange={HandleChange}
                   />
                 </div>
               </div>
-              <div className='my-1'>
-                  <label className='form-label fw-bold' htmlFor='address'>Permanent Address</label>
-                <div className=''>
-                  <textarea
-                    name='address'
-                    id='address'
-                    rows='3'
-                    className='w-75 ms-5'
-                    value={hosteler.address}
-                    onChange={HandleChange}
-                  />
-                </div>
-              </div>
               <div className='row my-1'>
                 <div className='d-flex'>
-                  <label className='form-label fw-bold mt-2 col-4' htmlFor='workingname'>Office Name :</label>
+                  <label className='form-label fw-bold mt-2 col-5' htmlFor='workingname'>Office Name :</label>
                   <input
                     type='text'
                     name='workingname'
                     id='workingname'
-                    className='form-control w-50 col-8'
+                    className='form-control w-50 col-7'
                     placeholder='Enter office Name'
                     value={hosteler.workingname}
+                    onChange={HandleChange}
+                  />
+                </div>
+              </div>
+              <div className='my-1'>
+                <h5 className='text-secondary fw-bold'>Address</h5>
+                <div className='d-flex'>
+                  <label className='form-label fw-bold mt-2 col-5' htmlFor='houseno'>House No. :</label>
+                  <input
+                    type='text'
+                    name='houseno'
+                    id='houseno'
+                    className='form-control w-50 col-7 mb-1'
+                    placeholder='Enter House Number'
+                    value={hosteler.houseno}
+                    onChange={HandleChange}
+                  />
+                </div>
+                <div className='d-flex'>
+                  <label className='form-label fw-bold mt-1 col-5' htmlFor='street'>Street Name :</label>
+                  <input
+                    type='text'
+                    name='street'
+                    id='street'
+                    className='form-control w-50 col-7 mb-1'
+                    placeholder='Enter Street Name'
+                    value={hosteler.street}
+                    onChange={HandleChange}
+                  />
+                </div>
+                <div className='d-flex'>
+                  <label className='form-label fw-bold mt-1 col-5' htmlFor='city'>City :</label>
+                  <input
+                    type='text'
+                    name='city'
+                    id='city'
+                    className='form-control w-50 col-7 mb-1'
+                    placeholder='Enter City Name'
+                    value={hosteler.city}
+                    onChange={HandleChange}
+                  />
+                </div>
+                <div className='d-flex'>
+                  <label className='form-label fw-bold mt-1 col-5' htmlFor='state'>State :</label>
+                  <input
+                    type='text'
+                    name='state'
+                    id='state'
+                    className='form-control w-50 col-7 mb-1'
+                    placeholder='Enter State Name'
+                    value={hosteler.state}
+                    onChange={HandleChange}
+                  />
+                </div>
+                <div className='d-flex'>
+                  <label className='form-label fw-bold mt-1 col-5' htmlFor='pincode'>PinCode :</label>
+                  <input
+                    type='text'
+                    name='pincode'
+                    id='pincode'
+                    className='form-control w-50 col-7 mb-1'
+                    placeholder='Enter Pincode Name'
+                    value={hosteler.pincode}
                     onChange={HandleChange}
                   />
                 </div>
@@ -172,7 +240,7 @@ const HostelerHome = () => {
               </div>
             </form>
           </Modal.Body>
-        </Modal>
+      </Modal>
     </div>
   )
 }

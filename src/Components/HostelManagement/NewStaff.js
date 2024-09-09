@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 
 const NewStaff = () => {
@@ -7,8 +8,7 @@ const NewStaff = () => {
     mobileno:'',
     email:'',
     address:'',
-    workingname:'',
-    roomno:''
+    designation:''
   })
 
   const HandleChange = (e) =>{
@@ -16,11 +16,24 @@ const NewStaff = () => {
     setStaff({...staff,[name]:value})
   }
 
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    try {
+      axios.post('http://localhost:4000/addstaff',staff)
+      .then(res=>{
+        console.log(res.data);
+      })
+      setStaff('')
+    } catch (error) {
+      console.log('error :' + error)
+    }
+  }
+
   return (
     <div className='container-fluid mt-3'>
       <h4 className='fs-semibold text-secondary'>Add New Staff</h4>
       <div className='mt-2 ms-3'>
-        <form className='mt-3 ms-5'>
+        <form className='mt-3 ms-5' onSubmit={handleSubmit}>
           <div className='row'>
             <div className='col d-flex'>
               <label className='form-label fw-bold mt-2' htmlFor='name'>Name</label>
@@ -92,7 +105,7 @@ const NewStaff = () => {
               <input
                 type='text'
                 name='workingname'
-                id='workingname'
+                id='workingname' 
                 className='form-control w-50 ms-3'
                 placeholder='Enter Father`s Name'
                 value={staff.workingname}
@@ -102,19 +115,19 @@ const NewStaff = () => {
           </div> */}
           <div className='row mt-2'>
             <div className='col d-flex'>
-              <label className='form-label fw-bold mt-2' htmlFor='availablerooms'>Designation</label>
-              <select className='rounded ms-2 fw-semibold' name='availablerooms' id='availablerooms'>
-                <option>Select</option>
-                <option>Cook</option>
-                <option>Sweeper</option>
-                <option>Supervisor</option>
-                <option>Helper</option>
+              <label className='form-label fw-bold mt-2' htmlFor='designation'>Designation</label>
+              <select className='rounded ms-2 fw-semibold' name='designation' id='designation' value={staff.designation} onChange={HandleChange}>
+                <option value=''>Select</option>
+                <option value='Cook'>Cook</option>
+                <option value='Sweeper'>Sweeper</option>
+                <option value='SuperVisor'>Supervisor</option>
+                <option value='Helper'>Helper</option>
               </select>
             </div>
           </div>
           <div className='d-flex justify-content-around mt-3'>
             <button className='btn btn-danger'>Clear</button>
-            <button className='btn btn-success'>Save</button>
+            <button className='btn btn-success' type='submit'>Save</button>
           </div>
         </form>
       </div>

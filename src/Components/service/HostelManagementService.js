@@ -10,7 +10,7 @@ class HostelManagement {
         return axios.post(HostelManagementUrl,values)
     }
     static UpdateRoom(roomId, values) {
-        const HostelManagementUrl = `http://localhost:4000/roommanagement/${roomId}`;
+        const HostelManagementUrl = `http://localhost:4000/updateroom/${roomId}`;
         return axios.put(HostelManagementUrl, values);
     }
 
