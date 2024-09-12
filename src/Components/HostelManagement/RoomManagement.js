@@ -13,13 +13,14 @@ const RoomManagement = () => {
     roomId:'',
     roomNumber:'',
     sharing:'',
+    vacancy:'',
     active:false
   })
 
   const handleClose = () => {
     setShowAddRoom(false);
     setShowUpdateRoom(false);
-    setRoomField({ roomId: '', roomNumber: '', sharing: '', active: false });
+    setRoomField({ roomId: '', roomNumber: '', sharing: '',vacancy:'', active: false });
   }
 
   const HandleNewRoom = () => {
@@ -32,52 +33,34 @@ const RoomManagement = () => {
     setShowAddRoom(false);
   }
 
-  const HandleRoomChange = (e) =>{
-    const {name,value}=e.target;
-    setRoomField({...roomField,[name]:value});
-  }
+  const HandleRoomChange = (e) => {
+    const { name, value } = e.target;
+    
+    setRoomField(prevState => ({
+      ...prevState,
+      [name]: value,
+      vacancy: name === 'sharing' ? value : prevState.vacancy
+    }));
+  };
 
   const HandleCheckboxChange = (e) => {
     setRoomField({ ...roomField, active: e.target.checked });
   };
 
-  // const handleAddRoomSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const roomData = {
-  //     roomNumber: roomField.roomNumber,
-  //     sharing: roomField.sharing,
-  //     isActive: roomField.active,
-  //   };
-  //   console.log(roomData);
-    
-  //   try {
-  //     await HostelManagement.AddNewRoom(roomData).then(res=>{
-  //       console.log(res.data);
-  //       setRoomField({ roomNumber: '', sharing: '', isActive: false });
-  //       FetchRooms();
-  //     })
-  //     // const response = await axios.post('http://localhost:4000/roommanagement', roomData);
-  //     // console.log('Room added:', response.data);
-  //     // Reset the form fields
-  //     // setRoomField({ roomNumber: '', sharing: '', isActive: false });
-  //   } catch (error) {
-  //     console.error('There was an error adding the room:', error);
-  //   }
-  //   handleClose();
-  // };
 
   const handleAddRoomSubmit = async (e) => {
     e.preventDefault();
     const roomData = {
       roomNumber: roomField.roomNumber,
       sharing: roomField.sharing,
+      vacancy: roomField.vacancy,
       isActive: roomField.active,
     };
   
     try {
       const response = await axios.post('http://localhost:4000/roommanagement', roomData);
       console.log('Room added:', response.data);
-      setRoomField({ roomNumber: '', sharing: '', active: false });
+      setRoomField({ roomNumber: '', sharing: '', vacancy:'', active: false });
       FetchRooms();
     } catch (error) {
       console.error('There was an error adding the room:', error);
@@ -91,6 +74,7 @@ const RoomManagement = () => {
       roomId: room.roomId,
       roomNumber: room.roomNumber,
       sharing: room.sharing,
+      vacancy:room.vacancy,
       active: room.isActive
     });
     setShowUpdateRoom(true);
@@ -102,6 +86,7 @@ const RoomManagement = () => {
     const updatedRoomData = {
       roomNumber: roomField.roomNumber,
       sharing: roomField.sharing,
+      vacancy:roomField.vacancy,
       isActive: roomField.active,
     };
 
@@ -126,19 +111,10 @@ const RoomManagement = () => {
     }
   };
 
-  // const FetchRooms = async() =>{
-  //   try {
-  //     const response = await axios.get('http://localhost:4000/getrooms');
-  //     setRoomsData(response.data);
-  //   } catch (error) {
-  //     console.error('There was an error fetching the rooms:', error);
-  //   }
-  // }
 
   async function FetchRooms() {
     try {
       const response = await axios.get('http://localhost:4000/getrooms');
-      // Ensure that the response data is an array
       if (Array.isArray(response.data)) {
         setRoomsData(response.data);
       } else {
@@ -147,11 +123,10 @@ const RoomManagement = () => {
       }
     } catch (error) {
       console.error('Error fetching rooms:', error);
-      setRoomsData([]); // Set as empty array in case of error
+      setRoomsData([]); 
     }
   }
   useEffect(() => {
-
     FetchRooms();
   }, []);
 
@@ -171,8 +146,9 @@ const RoomManagement = () => {
             <tr>
               <th className='text-primary'>Sl.No.</th>
               <th className='text-primary'>Room Number</th>
-              <th className='text-primary'>Active</th>
+              <th className='text-primary'>Sharing</th>
               <th className='text-primary'>Status</th>
+              <th className='text-primary'>Vacancy</th>
               <th className='text-primary'>Actions</th>
             </tr>
           </thead>
@@ -184,6 +160,7 @@ const RoomManagement = () => {
                   <td className='text-center'>{item.roomNumber}</td>
                   <td className='text-center'>{item.sharing}</td>
                   <td className='text-center'>{item.isActive ? 'Active' : 'Inactive'}</td>
+                  <td className='text-center'>{item.vacancy}</td>
                   <td className='text-center'>
                     <>
                       <button className='btn btn-warning mx-2 py-1' onClick={() => handleEditRoom(item)}>Edit <i className="fa-solid fa-pen-to-square ms-1"></i></button>
@@ -205,15 +182,16 @@ const RoomManagement = () => {
             <form onSubmit={handleAddRoomSubmit}>
               <div className='ms-3'>
                 <div className='d-flex'>
-                  <label className='mt-2 mx-2 fw-bold'>Room No.</label>
+                  <label className='mt-2 mx-2 fw-bold' htmlFor='roomNumber'>Room No.</label>
                   <input
                     type='text'
+                    id='roomNumber'
                     name='roomNumber'
                     placeholder='Enter Room Number'
                     className='form-control w-50'
                     value={roomField.roomNumber}
                     onChange={HandleRoomChange}
-                    maxLength={5}
+                    maxLength={4}
                     required
                     onKeyPress={(e) => {
                       const isValidInput = /[0-9]/;
@@ -224,20 +202,32 @@ const RoomManagement = () => {
                   />
                 </div>
                 <div className='mx-2 my-3 form-group'>
-                  <label className='fw-bold'>No. of Sharing</label>
-                  <select className='rounded ms-2 fw-semibold' name='sharing' value={roomField.sharing} onChange={HandleRoomChange}>
+                  <label className='fw-bold' htmlFor='sharing'>No. of Sharing</label>
+                  <select className='rounded ms-2 fw-semibold' name='sharing' id='sharing' value={roomField.sharing} onChange={HandleRoomChange} required>
                     <option value=''>Select</option>
-                    <option value='1 sharing'>1 sharing</option>
-                    <option value='2 sharing'>2 sharing</option>
-                    <option value='3 sharing'>3 sharing</option>
-                    <option value='4 sharing'>4 sharing</option>
-                    <option value='5 sharing'>5 sharing</option>
-                    <option value='6 sharing'>6 sharing</option>
-                    <option value='7 sharing'>7 sharing</option>
-                    <option value='8 sharing'>8 sharing</option>
-                    <option value='9 sharing'>9 sharing</option>
-                    <option value='10 sharing'>10 sharing</option>
+                    <option value='1'>1 sharing</option>
+                    <option value='2'>2 sharing</option>
+                    <option value='3'>3 sharing</option>
+                    <option value='4'>4 sharing</option>
+                    <option value='5'>5 sharing</option>
+                    <option value='6'>6 sharing</option>
+                    <option value='7'>7 sharing</option>
+                    <option value='8'>8 sharing</option>
+                    <option value='9'>9 sharing</option>
+                    <option value='10'>10 sharing</option>
                   </select>
+                </div>
+                <div className='my-2 d-flex'>
+                  <label className='mt-2 mx-2 fw-bold'>Vacancy</label>
+                  <input
+                    type='text'
+                    name='vacancy'
+                    className='form-control w-50 fw-semibold'
+                    placeholder='Enter Vacancy'
+                    value={roomField.vacancy}
+                    onChange={HandleRoomChange}
+                    readOnly
+                  />
                 </div>
                 <div className='my-3 d-flex'>
                   <label className="form-check-label fw-bold mx-2" for="flexSwitchCheckChecked">Active / Deactive</label>
@@ -266,7 +256,7 @@ const RoomManagement = () => {
         </Modal.Header>
         <Modal.Body>
         <form onSubmit={handleUpdateRoomSubmit}>
-              <div className='mt-2 ms-3'>
+              <div className='ms-3'>
                 <div className='d-flex my-3'>
                   <label className='mt-2 mx-2 fw-bold'>Room No.</label>
                   <input

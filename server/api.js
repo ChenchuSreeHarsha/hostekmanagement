@@ -34,6 +34,7 @@ app.post('/roommanagement',async(req,res)=>{
           roomId,
           roomNumber : req.body.roomNumber,
           sharing : req.body.sharing,
+          vacancy : req.body.vacancy,
           isActive : (req.body.isActive == true) ? true : false
         }
         await collection.insertOne(roomData)
@@ -113,9 +114,14 @@ app.post('/addnewhosteler',async(req,res)=>{
             name : req.body.name,
             fathername : req.body.fathername,
             mobileno : req.body.mobileno,
+            altmobileno : req.body.altmobileno,
             email : req.body.email,
-            address : req.body.address,
             workingname : req.body.workingname,
+            houseno : req.body.houseno,
+            street : req.body.street,
+            city : req.body.city,
+            state : req.body.state,
+            pincode : req.body.pincode,
             roomno : req.body.roomno
         }
         await collection.insertOne(hosteler);
@@ -180,6 +186,22 @@ app.post('/edithosteler', async (req, res) => {
       res.send('staff is added');
     } catch (error) {
       res.send('error at adding staff')
+    }
+  })
+
+  app.get('/getstaff',async(req,res)=>{
+    try {
+      await client.connect();
+      const db = client.db(dbName);
+      const collection = db.collection('Staff');
+      const result = await collection.find({}).toArray();
+      if(result.length == 0){
+        res.send('no data found');
+      }else{
+        res.send(result);
+      }
+    } catch (error) {
+      res.send('error occured at get staff' + error);
     }
   })
 
